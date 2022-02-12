@@ -31,14 +31,14 @@ class AcGameMenu{
     add_listening_events(){
         let outer=this;
         this.$single_mode.click(function(){
-outer.hide();
+            outer.hide();
             outer.root.playground.show();
         });
         this.$multi_mode.click(function(){
             console.log("click multi mode");
         });
         this.$settings.click(function(){
-console.log("click settings");
+            console.log("click settings");
         });
     }
 
