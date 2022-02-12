@@ -74,7 +74,6 @@ class Player extends AcGameObject{
         let x=this.x;
         let y=this.y;
         let radius=radius;
-        i
     }
 
     //求两点之间的距离
