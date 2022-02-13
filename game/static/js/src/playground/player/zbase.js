@@ -45,7 +45,7 @@ class Player extends AcGameObject{
             return false;
         });
 
-        //鼠标控制右键
+//鼠标控制右键
         this.playground.game_map.$canvas.mousedown(function(e){
 
             //左键1，滚轮2，右键3
@@ -60,7 +60,7 @@ class Player extends AcGameObject{
         });
 
 
-        //设置火球技能，查表找出键盘和数字的替代关系
+//设置火球技能，查表(keycode)找出键盘和数字的替代关系
         $(window).keydown(function(e){
             if(e.which===81){
                 outer.cur_skill="fireball";
@@ -142,7 +142,7 @@ class Player extends AcGameObject{
             this.move_length=0;
             this.x+=this.damage_x*this.damage_speed*this.timedelta/1000;
             this.y+=this.damage_y*this.damage_speed*this.timedelta/1000;
-            this.damage_speed+=this.friction;
+            this.damage_speed*=this.friction;
         }else{
             if(this.move_length<this.eps){
                 this.move_length=0;

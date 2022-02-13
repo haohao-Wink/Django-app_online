@@ -239,7 +239,7 @@ class Player extends AcGameObject{
             return false;
         });
 
-        //鼠标控制右键
+//鼠标控制右键
         this.playground.game_map.$canvas.mousedown(function(e){
 
             //左键1，滚轮2，右键3
@@ -254,7 +254,7 @@ class Player extends AcGameObject{
         });
 
 
-        //设置火球技能，查表找出键盘和数字的替代关系
+//设置火球技能，查表(keycode)找出键盘和数字的替代关系
         $(window).keydown(function(e){
             if(e.which===81){
                 outer.cur_skill="fireball";
@@ -336,7 +336,7 @@ class Player extends AcGameObject{
             this.move_length=0;
             this.x+=this.damage_x*this.damage_speed*this.timedelta/1000;
             this.y+=this.damage_y*this.damage_speed*this.timedelta/1000;
-            this.damage_speed+=this.friction;
+            this.damage_speed*=this.friction;
         }else{
             if(this.move_length<this.eps){
                 this.move_length=0;
@@ -373,74 +373,75 @@ class Player extends AcGameObject{
     }
 
 }
-class FireBall extends AcGameObject{
-    constructor(playground,player,x,y,radius,vx,vy,color,speed,move_length,damage){
-        super();
-        this.playground=playground;
-        this.player=player;
-        this.ctx=this.playground.game_map.ctx;
-        this.x=x;
-        this.y=y;
-        this.vx=vx;
-        this.vy=vy;
-        this.radius=radius;
-        this.color=color;
-        this.speed=speed;
-        this.move_length=move_length;
-        this.damage=damage;
-        this.eps=0.1;
-    }
+class FireBall extends AcGameObject {
+        constructor(playground, player, x, y, radius, vx, vy, color, speed, move_length, damage) {
+                    super();
+                    this.playground = playground;
+                    this.player = player;
+                    this.ctx = this.playground.game_map.ctx;
+                    this.x = x;
+                    this.y = y;
+                    this.vx = vx;
+                    this.vy = vy;
+                    this.radius = radius;
+                    this.color = color;
+                    this.speed = speed;
+                    this.move_length = move_length;
+                    this.damage = damage;
+                    this.eps = 0.1;
+                }
 
-    start(){}
+        start() {
+                }
 
-    update(){
-        if(this.move_length<this.eps){
-            this.destroy();
-            return false;
-        }
+        update() {
+                    if (this.move_length < this.eps) {
+                                    this.destroy();
+                                    return false;
+                                }
 
-        let moved=Math.min(this.move_length,this.speed*this.timedelta/1000);
-        this.x+=this.vx*moved;
-        this.y-=this.vy*moved;
-        this.move_length-=moved;
+                    let moved = Math.min(this.move_length, this.speed * this.timedelta / 1000);
+                    this.x += this.vx * moved;
+                    this.y += this.vy * moved;
+                    this.move_length -= moved;
 
-        for(let i=0;i<this.playground.players.length;i++){
-            let player=this.playground.players[i];
-            if(this.player!=player && this.is_collision(player)){
-                this.attack(player);
-            }
-        }
+                    for (let i = 0; i < this.playground.players.length; i ++ ) {
+                                    let player = this.playground.players[i];
+                                    if (this.player !== player && this.is_collision(player)) {
+                                                        this.attack(player);
+                                                    }
+                                }
 
-        this.render();
-    }
+                    this.render();
+                }
 
-    get_dist(x1,x2,y1,y2){
-        let dx=x1-x2;
-        let dy=y1-y2;
-        return Math.sqrt(dx*dx+dy*dy);
-    }
+        get_dist(x1, y1, x2, y2) {
+                    let dx = x1 - x2;
+                    let dy = y1 - y2;
+                    return Math.sqrt(dx * dx + dy * dy);
+                }
 
-    is_collision(player){
-        let distance=this.get_dist(this.x,this.y,player.x,player.y);
-        if(distance<this.radius+player.radius){
-            return true;
-        }
-        return false;
-    }
+        is_collision(player) {
+                    let distance = this.get_dist(this.x, this.y, player.x, player.y);
+                    if (distance < this.radius + player.radius)
+                            return true;
+                    return false;
+                }
 
-    attack(player){
-        let angle=Math.atan2(player.y-this.y,player.x-this.x);
-        player.is_attacked(angle,this.damage);
-        this.destroy();
-    }
+        attack(player) {
+                    let angle = Math.atan2(player.y - this.y, player.x - this.x);
+                    player.is_attacked(angle, this.damage);
+                    this.destroy();
+                }
 
-    render(){
-        this.ctx.beginPath();
-        this.ctx.arc(this.x,this.y,this.radius,0,Math.PI*2,false);
-        this.ctx.fillStyle=this.color;
-        this.ctx.fill();
-    }
+        render() {
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                    this.ctx.fillStyle = this.color;
+                    this.ctx.fill();
+                }
 }
+
 
 class AcGamePlayground{
     constructor(root){
@@ -458,7 +459,6 @@ class AcGamePlayground{
         this.game_map=new GameMap(this);
         this.players=[];
         this.players.push(new Player(this,this.width/2,this.height/2,this.height*0.05,"white",this.height*0.15,true));
-        this.start();
 
         for(let i=0;i<5;i++){
             this.players.push(new Player(this,this.width/2,this.height/2,this.height*0.05,this.get_random_color(),this.height*0.15,false));
