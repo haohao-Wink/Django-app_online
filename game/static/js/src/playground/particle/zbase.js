@@ -1,5 +1,5 @@
-class Particle extends AcGameObject(){
-    constructor(playground,x,y,radius,vx,vy,color,speed,move_lenght){
+class Particle extends AcGameObject{
+    constructor(playground,x,y,radius,vx,vy,color,speed,move_length){
         super();
         this.playground=playground;
         this.ctx=this.playground.game_map.ctx;
@@ -20,7 +20,7 @@ class Particle extends AcGameObject(){
     update(){
 
         //判断死亡
-        if(this.move_legth<this.eps || this.speed<this.eps){
+        if(this.move_length<this.eps || this.speed<this.eps){
             this.destroy();
             return false;
         }
@@ -35,7 +35,7 @@ class Particle extends AcGameObject(){
 
     render(){
         this.ctx.beginPath();
-        this.ctx.arc(this.x,this.y,tis.radius,0,Math.PI*2,false);
+        this.ctx.arc(this.x,this.y,this.radius,0,Math.PI*2,false);
         this.ctx.fillStyle=this.color;
         this.ctx.fill();
     }
